@@ -45,21 +45,23 @@ class Condiotions:
     self.rush_hours_threshold = rush_hours_threshold
 
 
-class Record:
+class Record(object):
   def __init__(
       self, datetime: datetime, port: Port,
-      user: User, action: str) -> None:
+      user: User, dest:str, action: str) -> None:
     self.datetime = datetime
     self.port = port
     self.user = user
+    self.dest = dest
     self.action = action
 
   def __str__(self):
-    template = "{date} {time} {source_ip} 155.155.155.155 {port} {protocol} {username} {action}"
+    template = "{date} {time} {source_ip} {dest} {port} {protocol} {username} {action}"
     return template.format(
       date=self.datetime.date(),
       time=self.datetime.time(),
       source_ip=self.user.get_ip(),
+      dest=self.dest,
       port=self.port.number,
       protocol=self.port.protocol,
       username=self.user.username,
