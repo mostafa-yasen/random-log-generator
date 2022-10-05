@@ -55,6 +55,18 @@ class Record(object):
     self.dest = dest
     self.action = action
 
+  @classmethod
+  def from_str(cls, input_str):
+    record = input_str.split(" ")
+    record_object = Record(
+      datetime=datetime.strptime(f"{record[0]} {record[1]}", "%Y-%m-%d %H:%M:%S"),
+      port=Port(record[4], record[5]),
+      user=User(record[6], [record[2]]),
+      dest=record[3],
+      action=record[7]
+    )
+    return record_object
+
   def __str__(self):
     template = "{date} {time} {source_ip} {dest} {port} {protocol} {username} {action}"
     return template.format(
@@ -67,3 +79,9 @@ class Record(object):
       username=self.user.username,
       action=self.action
     )
+
+  def __eq__(self, __o: object) -> bool:
+    return self.user.get_ip() == __o.user.get_ip()
+
+  def __hash__(self) -> int:
+    return sum(map(int, self.user.get_ip().split(".")))
