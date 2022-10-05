@@ -120,7 +120,11 @@ class Solution(object):
     output_file = kwargs.get("output_file") or "output.log"
     with open(output_file, "w") as f:
       for i in tqdm(range(len(records)), desc=f"Writing {output_file}", ncols=100):
-        f.write(str(records[i]) + "\n")
+        end = "\n"
+        if i == len(records) - 1:
+          end = ""
+
+        f.write(str(records[i]) + end)
 
       # f.write("\n".join(map(str, records)))
 
